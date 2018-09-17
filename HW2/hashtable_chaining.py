@@ -37,8 +37,11 @@ class HashTable:
   # Note: Neither `key` nor `value` may be None (an exception will be raised)
   def insert(self, key, value):
 
-    if key is None or value is None:
-      raise TypeError('Key and value cannot be None!')
+    try:
+      if key is None or value is None:
+        raise TypeError
+    except TypeError:
+      print('Key and/or value cannot be None!')
 
     ind = cs5112_hash1(key) % self.array.size
     head = self.array.get(ind)
@@ -71,8 +74,11 @@ class HashTable:
   # Note: `key` may not be None (an exception will be raised)
   def get(self, key):
 
-    if key is None:
-      raise TypeError('Key and value cannot be None!')
+    try:
+      if key is None:
+        raise TypeError
+    except TypeError:
+      print('Key cannot be None!')
 
     ind = cs5112_hash1(key) % self.array.size
     head = self.array.get(ind)
@@ -92,8 +98,11 @@ class HashTable:
   def remove(self, key):
 
 
-    if key is None:
-      raise TypeError('Key and value cannot be None!')
+    try:
+      if key is None:
+        raise TypeError
+    except TypeError:
+      print('Key cannot be None!')
 
     ind = cs5112_hash1(key) % self.array_size
     head = self.array.get(ind)
