@@ -4,6 +4,7 @@
 # h = HuffmanTree([('A', 2), ('B', 7), ('C', 1)])
 # assert(h.encode('ABC') == '01100')
 # assert(h.decode(h.encode('ABC')) == 'ABC')
+
 class HuffmanTree:
   # Helper object for building the Huffman tree.
   # You may modify this constructor but the grading script rlies on the left, right, and symbol fields.
@@ -22,7 +23,7 @@ class HuffmanTree:
       # (place TreeNode object here)
 
     while len(symbol_list) > 1:
-      symbol_list = sorted(symbol_list, key=lambda x: x[1], reverse=True)
+      symbol_list = sorted(symbol_list, key=lambda x: (x[1], self.get_min_element(x[0])), reverse=True)
 
       tmp_left = symbol_list.pop()
       left_w = tmp_left[1]
@@ -51,6 +52,11 @@ class HuffmanTree:
     self.wordict = dict()
     self.dict_builder(self.root, [])
 
+  def get_min_element(self, element):
+    if type(element) == str:
+      return element
+    else:
+      return element.min_element
 
   def dict_builder(self, root, path):
 
@@ -84,7 +90,8 @@ class HuffmanTree:
     ans = []
     while len(s) > 0:
       count = 0
-      self.decode_util(self.root, s, ans, count)
+      if not self.decode_util(self.root, s, ans, count):
+        return None
       slen = len(self.wordict[ans[-1]])
       s = s[slen:]
     return "".join(ans)
@@ -93,9 +100,32 @@ class HuffmanTree:
 
     if not root.left and not root.right:
       ans.append(root.symbol)
-      return
+      return True
+
+    if len(s) == 0:
+      return None
 
     if s[0] == '0':
-      self.decode_util(root.left, s[1:], ans, count+1)
+      return self.decode_util(root.left, s[1:], ans, count+1)
     else:
-      self.decode_util(root.right, s[1:], ans, count+1)
+      return self.decode_util(root.right, s[1:], ans, count+1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
