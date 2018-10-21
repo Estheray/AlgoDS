@@ -16,12 +16,21 @@ class BoyerMooreMajority:
   # influence the majority element guess returned by `get_majority`.
   def add_next_element(self, element):
     assert(element is not None)
-    #YOUR CODE HERE
-
+    #if counter is zero, supplant guess with incoming
+    if self.counter < 1:
+        self.guess = element
+        self.counter = 1
+    #if incoming is guess, increase bet on incoming as absolute majority
+    elif self.guess == element:
+        self.counter += 1
+    #if incoming is other than guess, decrease bet on incoming as absolute majority
+    else:
+        self.counter -=1
   # Gives the best guess of which of the elements seen so far make up the
   # majority of the elements in set of elements. If a majority element exists,
   # this algorithm will report it correctly. Otherwise, there is no guarantee
   # about the output.
   def get_majority(self):
     #YOUR CODE HERE
-    pass
+    return self.guess
+    # pass
