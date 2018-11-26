@@ -70,58 +70,29 @@ def cell_ordering(n,m):
 # align_s and align_t are strings of the same length demonstrating the alignment.
 # See instructions.pdf for more information on align_s and align_t.
 def diff_from_table(s, t, table):
-    print("++++++++++++++")
     cost = table.get(len(s),len(t)).cost
     i = len(s)
     j = len(t)
-    align_s = ''
-    align_t = ''
     cell = table.get(i, j)
-    print(cell)
-    align_s = cell.s_char + align_s
-    align_t = cell.t_char + align_t
-    if(cell.s_char != '-'):
-        s = s[:-1]
-    if(cell.t_char != '-'):
-        t = t[:-1]
+    align_s = cell.s_char
+    align_t = cell.t_char
+    
     while(not ((i==1 and j==0) or (i==0 and j==1) or (i==1 and j==1))):
-        ctop = table.get(i, j-1)
-        cleft = table.get(i-1, j)
-        cdiag = table.get(i-1, j-1)
-        minimum = (float("inf"), None)
-        print("000000000000000000")
-        print(ctop)
-        print(cleft)
-        print(cdiag)
-        if(len(s) == 0):
-            s = '-'*len(t)
-        if(len(t) == 0):
-            t = '-'*len(s)
-        print(s,t)
-        if((ctop.s_char == s[-1] or ctop.s_char == '-') and 
-            (ctop.t_char == t[-1] or ctop.t_char == '-')):
-            if(ctop.cost < minimum[0]):
-                minimum = (ctop.cost, (i, j-1))
-        if((cleft.s_char == s[-1] or cleft.s_char == '-') and 
-            (cleft.t_char == t[-1] or cleft.t_char == '-')):
-            if(cleft.cost < minimum[0]):
-                minimum = (cleft.cost, (i-1, j))
-        if((cdiag.s_char == s[-1] or cdiag.s_char == '-') and 
-            (cdiag.t_char == t[-1] or cdiag.t_char == '-')):
-            if(cdiag.cost < minimum[0]):
-                minimum = (cdiag.cost, (i-1, j-1))
-        (i,j) = minimum[1]
+        if(cell.s_char != '-' and cell.t_char != '-'):
+            # Case add char in both string
+            i-=1
+            j-=1
+        elif(cell.s_char != '-'):
+            # Case add char only to s
+            i-=1
+        else:
+            # Case add char only to t
+            j-=1
+
         cell = table.get(i, j)
-        print(cell)
         align_s = cell.s_char + align_s
         align_t = cell.t_char + align_t
-        print(align_s, align_t)
-        if(cell.s_char != '-'):
-            s = s[:-1]
-        if(cell.t_char != '-'):
-            t = t[:-1]
 
-    print("++++++++++++++")
     return (cost, align_s, align_t)
 
 # Example usage
