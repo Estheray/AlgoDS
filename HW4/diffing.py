@@ -84,7 +84,7 @@ def diff_from_table(s, t, table):
         s = s[:-1]
     if(cell.t_char != '-'):
         t = t[:-1]
-    while(True):
+    while(not ((i==1 and j==0) or (i==0 and j==1) or (i==1 and j==1))):
         ctop = table.get(i, j-1)
         cleft = table.get(i-1, j)
         cdiag = table.get(i-1, j-1)
@@ -120,8 +120,6 @@ def diff_from_table(s, t, table):
             s = s[:-1]
         if(cell.t_char != '-'):
             t = t[:-1]
-        if((i==1 and j==0) or (i==0 and j==1)):
-            break
 
     print("++++++++++++++")
     return (cost, align_s, align_t)
