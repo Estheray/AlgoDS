@@ -21,7 +21,6 @@ class DiffingCell:
 def cost_of_next(i,j,s,t,cost):
     news = s+"-"
     newt = t+'-'
-    print("Next",news[i+1],newt[j+1])
     if(news[i+1]=="-" and newt[j+1]=="-"):
         return 0
     return cost(news[i+1],newt[j+1])
@@ -29,7 +28,7 @@ def cost_of_next(i,j,s,t,cost):
 # Input: a dynamic programming table,  cell index i and j, the input strings s and t, and a cost function cost.
 # Should return a DiffingCell which we will place at (i,j) for you.
 def fill_cell(table, i, j, s, t, cost):
-    print("+++++++++++++")
+    #print("==================")
 
     # First cell
     if(i==0 and j==0):
@@ -46,58 +45,16 @@ def fill_cell(table, i, j, s, t, cost):
         #print(table.get(i,j-1).cost + cost("-", t[j-1]), "-", t[j-1])
         return DiffingCell(table.get(i,j-1).cost + cost("-", t[j-1]), "-", t[j-1])
 
-    c1 = table.get(i,j-1).cost + cost("-", t[j-1])
-    c2 = table.get(i-1,j).cost + cost(s[i-1], "-")
-    c3 = table.get(i-1,j-1).cost + cost(s[i-1], t[j-1])
+    ctop = table.get(i,j-1).cost + cost("-", t[j-1])
+    cleft = table.get(i-1,j).cost + cost(s[i-1], "-")
+    cdiag = table.get(i-1,j-1).cost + cost(s[i-1], t[j-1])
     cases = { 
-        c1: DiffingCell(c1, "-", t[j-1]), 
-        c2: DiffingCell(c2, s[i-1], "-"), 
-        c3: DiffingCell(c3, s[i-1], t[j-1]), 
+        ctop: DiffingCell(ctop, "-", t[j-1]),
+        cleft: DiffingCell(cleft, s[i-1], "-"),
+        cdiag: DiffingCell(cdiag, s[i-1], t[j-1]),
     }
-    #print(cases.get(min(c1,c2,c3)))
-    return cases.get(min(c1,c2,c3))
-
-    # print("================")
-    # print("c1", s[i-1], t[j-1])
-    # c1 = table.get(i-1,j-1).cost + cost(s[i-1], t[j-1])
-    # print("c2", "-", t[j-1])
-    # c2 = table.get(i-1,j).cost + cost("-", t[j-1])
-    # print("c3", s[i-1], "-")
-    # c3 = table.get(i,j-1).cost + cost(s[i-1], "-")
-    # cases = { 
-    #     c1: DiffingCell(c1+cost_of_next(i-1, j-1,s,t,cost), s[i-1], t[j-1]), 
-    #     c2: DiffingCell(c2+cost_of_next(i-2, j-1,s,t,cost), "-", t[j-1]), 
-    #     c3: DiffingCell(c3+cost_of_next(i-1, j-2,s,t,cost), s[i-1], "-"), 
-    # } 
-    # print(i,j,cases.get(min(c1,c2,c3)))
-    # return cases.get(min(c1,c2,c3)) 
-
-    # # s_prime = "-"+s
-    # t_prime = "-"+t
-    # cost = cost(s_prime[i], t_prime[j])
-    # print("------")
-    # print(i,j)
-    # print(cost, s_prime[i], t_prime[j])
-    # return DiffingCell(cost, s_prime[i], t_prime[j])
-
-
-    # i1 = s[i]
-    # j1 = t[j]
-    # i2 = j2 = "-"
-    # if(i < len(s)-1):
-    #     i2 = s[i+1]
-    # if(j < len(t)-1):
-    #     j2 = t[j+1]
-    # c11 = cost("-",j1) 
-    # c12 = cost(i1,j2)
-    # c21 = cost(i1,"-")
-    # c22 = cost(i2,j1)
-    # if((c11+c12) < (c21+c22)):
-    #     print(c11, '-', j1)
-    #     return DiffingCell(c11, '-', j1)
-    # else:
-    #     print(c21, i1, "-")
-    #     return DiffingCell(c21, i1, "-")
+    #print(cases.get(min(ctop,cleft,cdiag)))
+    return cases.get(min(ctop,cleft,cdiag))
 
 # Input: n and m, the sizes of s and t, respectively.
 # Should return a list of (i,j) tuples, the order you would like us to call fill_cell
@@ -113,8 +70,61 @@ def cell_ordering(n,m):
 # align_s and align_t are strings of the same length demonstrating the alignment.
 # See instructions.pdf for more information on align_s and align_t.
 def diff_from_table(s, t, table):
-    # YOUR CODE HERE
-    return (0, "", "")
+    print("++++++++++++++")
+    cost = table.get(len(s),len(t)).cost
+    i = len(s)
+    j = len(t)
+    align_s = ''
+    align_t = ''
+    cell = table.get(i, j)
+    print(cell)
+    align_s = cell.s_char + align_s
+    align_t = cell.t_char + align_t
+    if(cell.s_char != '-'):
+        s = s[:-1]
+    if(cell.t_char != '-'):
+        t = t[:-1]
+    while(True):
+        ctop = table.get(i, j-1)
+        cleft = table.get(i-1, j)
+        cdiag = table.get(i-1, j-1)
+        minimum = (float("inf"), None)
+        print("000000000000000000")
+        print(ctop)
+        print(cleft)
+        print(cdiag)
+        if(len(s) == 0):
+            s = '-'*len(t)
+        if(len(t) == 0):
+            t = '-'*len(s)
+        print(s,t)
+        if((ctop.s_char == s[-1] or ctop.s_char == '-') and 
+            (ctop.t_char == t[-1] or ctop.t_char == '-')):
+            if(ctop.cost < minimum[0]):
+                minimum = (ctop.cost, (i, j-1))
+        if((cleft.s_char == s[-1] or cleft.s_char == '-') and 
+            (cleft.t_char == t[-1] or cleft.t_char == '-')):
+            if(cleft.cost < minimum[0]):
+                minimum = (cleft.cost, (i-1, j))
+        if((cdiag.s_char == s[-1] or cdiag.s_char == '-') and 
+            (cdiag.t_char == t[-1] or cdiag.t_char == '-')):
+            if(cdiag.cost < minimum[0]):
+                minimum = (cdiag.cost, (i-1, j-1))
+        (i,j) = minimum[1]
+        cell = table.get(i, j)
+        print(cell)
+        align_s = cell.s_char + align_s
+        align_t = cell.t_char + align_t
+        print(align_s, align_t)
+        if(cell.s_char != '-'):
+            s = s[:-1]
+        if(cell.t_char != '-'):
+            t = t[:-1]
+        if((i==1 and j==0) or (i==0 and j==1)):
+            break
+
+    print("++++++++++++++")
+    return (cost, align_s, align_t)
 
 # Example usage
 if __name__ == "__main__":
