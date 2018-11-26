@@ -28,21 +28,16 @@ def cost_of_next(i,j,s,t,cost):
 # Input: a dynamic programming table,  cell index i and j, the input strings s and t, and a cost function cost.
 # Should return a DiffingCell which we will place at (i,j) for you.
 def fill_cell(table, i, j, s, t, cost):
-    #print("==================")
-
     # First cell
     if(i==0 and j==0):
-        #print(0, "-", "-")
         return DiffingCell(0, "-", "-")
 
     # First Row
     if(j==0):
-        #print(table.get(i-1,j).cost + cost(s[i-1], "-"), s[i-1] , "-")
         return DiffingCell(table.get(i-1,j).cost + cost(s[i-1], "-"), s[i-1] , "-")
 
     # First Column
     if(i==0):
-        #print(table.get(i,j-1).cost + cost("-", t[j-1]), "-", t[j-1])
         return DiffingCell(table.get(i,j-1).cost + cost("-", t[j-1]), "-", t[j-1])
 
     ctop = table.get(i,j-1).cost + cost("-", t[j-1])
@@ -53,7 +48,6 @@ def fill_cell(table, i, j, s, t, cost):
         cleft: DiffingCell(cleft, s[i-1], "-"),
         cdiag: DiffingCell(cdiag, s[i-1], t[j-1]),
     }
-    #print(cases.get(min(ctop,cleft,cdiag)))
     return cases.get(min(ctop,cleft,cdiag))
 
 # Input: n and m, the sizes of s and t, respectively.
@@ -76,8 +70,8 @@ def diff_from_table(s, t, table):
     cell = table.get(i, j)
     align_s = cell.s_char
     align_t = cell.t_char
-    
-    while(not ((i==1 and j==0) or (i==0 and j==1) or (i==1 and j==1))):
+    while(not ((i==1 and j==0) or (i==0 and j==1) or 
+        ((i==1 and j==1) and (cell.s_char != '-' and cell.t_char != '-')))):
         if(cell.s_char != '-' and cell.t_char != '-'):
             # Case add char in both string
             i-=1
