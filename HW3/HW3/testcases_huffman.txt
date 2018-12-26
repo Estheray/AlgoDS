@@ -1,5 +1,7 @@
 Tie-break 1;C,B,A;1,1,1;(C(AB));ABC;10110;010;CA
 Tie-break 2;D,C,B,A;1,1,1,1;((AB)(CD));ABCD;00011011;0011;AD
+Tie-break 3;A,B,C;3,5,2;((CA)B);;;;
+Tie-break, big tree;H,G,F,E,D,C,B,A;1,1,1,1,1,1,1,1;(((AB)(CD))((EF)(GH)));;;;
 Empty inputs;A,B,C,D;1,2,3,4;(D((AB)C));;;;
 Impossible decode;A,B,C;2,1,1;(A(BC));A;0;1;!
 Generated case number 0;j,e,F,h,Z,x,w,Y,X,q,A,i,I,l,z,O,v,o,V,G,n,E,T,B,L;13,10,9,15,5,8,1,7,5,2,12,6,14,3,8,7,5,5,5,9,12,9,14,2,5;((((EF)(G(LV)))(((XZ)e)((ov)A)))(((n(iO))(jI))((T(Y(l(q(wB)))))(h(xz)))));;;0111000011101111010010100101111111010;AEhxiizY
